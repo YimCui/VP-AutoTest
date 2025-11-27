@@ -1,4 +1,4 @@
-# VPF-ADTP: A Virtual-Physical Fusion Autonomous Driving Testing Platform
+# VP-AutoTest: A Virtual-Physical Fusion Autonomous Driving Testing Platform
 
 Keywords: Autonomous driving, virtual-physical fusion testing, edge scenario testing, cooperation ability testing, algorithm validation
 
