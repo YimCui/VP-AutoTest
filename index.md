@@ -25,14 +25,13 @@ To address these challenges, we propose the Virtual-Physical Testing Platform fo
 
 To address the aforementioned challenges, we propose the Virtual-Physical Testing platform for Autonomous vehicles (VP-AutoTest). By integrating over ten distinct virtual-physical elements, it enables both single-vehicle and multi-vehicle testing functionalities. Additionally, it incorporates multidimensional evaluation and defect diagnosis, thus supporting comprehensive and systematic testing of AD systems. The key contributions of the proposed platform are summarized as follows.
 
-%【Contributions】
-\textbf{Integration of Diverse Virtual-Physical Elements}: To replicate the complexity and diversity of real-world traffic participants, the proposed VP-AutoTest integrates a wide range of physical and virtual components. The physical elements include Connected and Automated Vehicles (CAVs), cloud-controlled vehicles, mannequins, and roadside infrastructure. The virtual components consist of simulated CAVs, remotely operated vehicles controlled by driving simulators, and simulated background traffic flows, enabling a comprehensive and realistic testing environment.
+**Integration of Diverse Virtual-Physical Elements**: To replicate the complexity and diversity of real-world traffic participants, the proposed VP-AutoTest integrates a wide range of physical and virtual components. The physical elements include Connected and Automated Vehicles (CAVs), cloud-controlled vehicles, mannequins, and roadside infrastructure. The virtual components consist of simulated CAVs, remotely operated vehicles controlled by driving simulators, and simulated background traffic flows, enabling a comprehensive and realistic testing environment.
 
-\textbf{Single and Multi-Vehicle Testing Capabilities}: To efficiently evaluate the various capabilities of AD systems, platform supports both single-vehicle interaction and multi-vehicle cooperation tests. For single-vehicle interaction, we introduce adversarial testing to adjust challenge intensity based on system performance, and parallel deduction to simulate high-risk takeover scenarios for evaluating decision-making algorithms. In the multi-vehicle cooperation tests, the platform utilizes communication between OBUs and Redis to evaluate V2V and V2I cooperation, covering the entire spectrum of Cooperative Driving Automation (CDA).
+**Single and Multi-Vehicle Testing Capabilities**: To efficiently evaluate the various capabilities of AD systems, platform supports both single-vehicle interaction and multi-vehicle cooperation tests. For single-vehicle interaction, we introduce adversarial testing to adjust challenge intensity based on system performance, and parallel deduction to simulate high-risk takeover scenarios for evaluating decision-making algorithms. In the multi-vehicle cooperation tests, the platform utilizes communication between OBUs and Redis to evaluate V2V and V2I cooperation, covering the entire spectrum of Cooperative Driving Automation (CDA).
 
-\textbf{Multidimensional Evaluation and Defect Diagnosis}: The platform facilitates multidimensional comparisons of algorithms, both horizontally and vertically, enabling detailed performance assessments across various versions. Additionally, it incorporates AI-driven expert systems that leverage knowledge reasoning to generate comprehensive diagnostic reports for the Algorithm Under Test (AUT), providing constructive insights for algorithmic improvement and optimization.
+**Multidimensional Evaluation and Defect Diagnosis**: The platform facilitates multidimensional comparisons of algorithms, both horizontally and vertically, enabling detailed performance assessments across various versions. Additionally, it incorporates AI-driven expert systems that leverage knowledge reasoning to generate comprehensive diagnostic reports for the Algorithm Under Test (AUT), providing constructive insights for algorithmic improvement and optimization.
 
-\textbf{Platform Credibility Self-Evaluation}: Since credibility remains one of the most critical challenges in virtual–physical fusion testing, VP-AutoTest incorporates a credibility self-evaluation mechanism that quantitatively assesses the reliability of each test case. Based on credibility analysis, the platform adaptively adjusts element combinations—adding more physical components in low-credibility scenarios to enhance realism and increasing virtual components in high-credibility ones to improve efficiency, thereby enhancing testing efficiency while ensuring credibility.
+**Platform Credibility Self-Evaluation**: Since credibility remains one of the most critical challenges in virtual–physical fusion testing, VP-AutoTest incorporates a credibility self-evaluation mechanism that quantitatively assesses the reliability of each test case. Based on credibility analysis, the platform adaptively adjusts element combinations—adding more physical components in low-credibility scenarios to enhance realism and increasing virtual components in high-credibility ones to improve efficiency, thereby enhancing testing efficiency while ensuring credibility.
 
 <div align="center">
   <img src="./Figs/Framework.png" alt="示意图" width="800">
@@ -132,9 +131,12 @@ The platform supports flexible configuration and combination of virtual and phys
 
 ## Appendix
 
-**👉 Please refer to the website for the full testing functionalities [Onsite](https://www.onsite.com.cn/)**.
+### **👉 A: Please refer to the website for the full testing functionalities [Onsite](https://www.onsite.com.cn/)**.
 
+### **👉 B: Supplementary VRU test materials**
+#### (1) Pedestrian road crossing
 
+#### (2) Reckless non-motor vehicles
 
 ## Contact
 
