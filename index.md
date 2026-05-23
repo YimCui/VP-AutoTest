@@ -135,8 +135,26 @@ The platform supports flexible configuration and combination of virtual and phys
 
 ### **👉 B: Supplementary VRU test materials**
 #### (1) Pedestrian road crossing
+<div align="center">
+  <figure>
+    <video muted controls width="720">
+      <source src="./Videos/pedestrian.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <figcaption>Vehicle-infrastructure cooperation testing cases</figcaption>
+  </figure>
+</div>
 
 #### (2) Reckless non-motor vehicles
+<div align="center">
+  <figure>
+    <video muted controls width="720">
+      <source src="./Videos/non-motor.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <figcaption>Vehicle-infrastructure cooperation testing cases</figcaption>
+  </figure>
+</div>
 
 ## Contact
 
