@@ -141,7 +141,7 @@ The platform supports flexible configuration and combination of virtual and phys
       <source src="./Videos/pedestrian.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
-    <figcaption>Vehicle-infrastructure cooperation testing cases</figcaption>
+    <figcaption>Pedestrian road crossing testing cases</figcaption>
   </figure>
 </div>
 
@@ -152,7 +152,7 @@ The platform supports flexible configuration and combination of virtual and phys
       <source src="./Videos/non-motor.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
-    <figcaption>Vehicle-infrastructure cooperation testing cases</figcaption>
+    <figcaption>Reckless non-motor vehicles testing cases</figcaption>
   </figure>
 </div>
 
