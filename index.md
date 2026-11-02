@@ -156,6 +156,55 @@ The platform supports flexible configuration and combination of virtual and phys
   </figure>
 </div>
 
+### **👉 C: Supplementary Sensitivity Analysis of DTW and PCA**
+
+To further examine the influence of DTW and PCA on the credibility comparison results, we conducted sensitivity analyses with different numbers of retained principal components and without PCA, together with a comparison with and without DTW, using the same 15 cases.
+
+#### (1) Sensitivity Analysis of the Number of Retained Principal Components
+
+To investigate the influence of PCA dimensionality, we kept the same 15 cases and their original DTW alignment paths fixed, retained 1, 2, 4, and 8 principal components, respectively, and additionally evaluated the full-dimensional results without PCA. Each input trajectory feature was standardized using **z-score standardization**:
+
+`x̃(t,j) = [x(t,j) − μ(j)] / σ(j)`
+
+Here, μ(j) and σ(j) denote the mean and standard deviation of the corresponding feature, respectively. The standardization parameters were kept unchanged across the different PCA settings.
+
+The **mean cumulative explained variance was 47.6%, 64.3%, 82.7%, and 97.8% when retaining 1, 2, 4, and 8 principal components, respectively**. These averages were calculated across the 30 real-world–platform trajectory comparisons associated with the 15 cases. When multiple principal components were retained, the metrics were calculated directly in the retained principal-component space, without reconstruction. Without PCA, the same calculations were applied directly to all standardized state features. PCC, TIC, Cross-FuzzyEn, and CS-PSD were calculated separately for each dimension and then averaged with equal weights, whereas RMSE was calculated over all time points and evaluated dimensions.
+
+**Table 1. Sensitivity analysis for different PCA settings**
+
+| PCA setting | PCC ↑ | RMSE ↓ | TIC ↓ | Cross-FuzzyEn ↓ | CS-PSD ↑ |
+|:---|:---:|:---:|:---:|:---:|:---:|
+| 1 retained PC | **0.977** / 0.967 (0.018) | **0.583** / 0.757 (0.003) | **0.133** / 0.168 (0.003) | **0.112** / 0.122 (0.208) | **0.997** / 0.994 (0.169) |
+| 2 retained PCs | 0.786 / 0.792 (0.679) | **0.983** / 1.057 (0.303) | **0.299** / 0.325 (0.252) | **0.138** / 0.145 (0.561) | **0.954** / 0.926 (0.151) |
+| 4 retained PCs | **0.544** / 0.522 (0.359) | **1.122** / 1.199 (0.188) | **0.470** / 0.495 (0.169) | **0.248** / 0.311 (0.030) | **0.852** / 0.798 (0.151) |
+| 8 retained PCs | **0.303** / 0.302 (0.847) | **1.014** / 1.055 (0.208) | **0.596** / 0.607 (0.389) | **0.227** / 0.283 (0.008) | **0.789** / 0.776 (0.978) |
+| Without PCA | **0.656** / 0.643 (0.454) | **0.884** / 0.912 (0.252) | **0.410** / 0.420 (0.359) | **0.081** / 0.103 (<0.001) | **0.860** / 0.842 (0.151) |
+
+*Each entry reports the VP-AutoTest mean / DC-in-the-loop mean (raw two-sided paired Wilcoxon p-value), based on 15 case pairs. Bold values indicate better mean performance by VP-AutoTest.*
+
+The results are presented in Table 1. Across the reported 15 cases, VP-AutoTest achieves better overall mean RMSE, TIC, Cross-FuzzyEn, and CS-PSD values than DC-in-the-loop under all evaluated PCA settings, including without PCA. Its mean PCC is also higher under all settings except when retaining two principal components, where it is slightly lower. These results indicate that, although the magnitude and statistical significance of the differences vary with the number of retained components, VP-AutoTest generally exhibits an overall mean trend toward closer agreement with the real-world reference results across the evaluated configurations.
+
+#### (2) Further Explanation of DTW and Comparison With and Without DTW
+
+Temporal misalignment and discrepancies intrinsic to virtual–physical testing are coupled and difficult to separate rigorously. Consequently, it cannot be directly determined whether the temporal differences removed by DTW include meaningful delays. In other words, **the value of DTW cannot be established or dismissed solely on the basis of increases or decreases in similarity metrics before and after its application.**
+
+Nevertheless, we additionally report results without DTW to provide supplementary evidence by examining whether the platform comparison remains consistent: if VP-AutoTest more closely reproduces the real-world results than DC-in-the-loop both with and without DTW, this would strengthen the original conclusion to some extent.
+
+The comparison uses the same 15 cases. Both settings retain the full trajectories, reuse the original standardization parameters, and fit a one-dimensional PCA after temporal processing according to the same fitting procedure. The five metrics are calculated directly on PC1. Without DTW, **point-by-point alignment on the normalized time axis** is used to establish correspondence, without nonlinear DTW matching.
+
+The DTW setting follows the original full-trajectory processing procedure. The Euclidean distance between standardized multidimensional state vectors is used as the local cost, and the cumulative cost along the alignment path is minimized. The alignment uses fixed endpoints, monotonicity, and continuity constraints, with allowable steps of (1, 0), (0, 1), and (1, 1). No additional time-window or slope constraints are imposed. The five metric results are presented in Table 2.
+
+**Table 2. Comparison with and without DTW**
+
+| DTW setting | PCC ↑ | RMSE ↓ | TIC ↓ | Cross-FuzzyEn ↓ | CS-PSD ↑ |
+|:---|:---:|:---:|:---:|:---:|:---:|
+| Without DTW | 0.956 / 0.959 (0.277) | 0.928 / 0.875 (0.762) | 0.208 / 0.196 (0.847) | **0.090** / 0.096 (0.035) | 0.994 / 0.994 (0.599) |
+| With DTW | **0.977** / 0.967 (0.018) | **0.583** / 0.757 (0.003) | **0.133** / 0.168 (0.003) | **0.112** / 0.122 (0.208) | **0.997** / 0.994 (0.169) |
+
+*Each entry reports the VP-AutoTest mean / DC-in-the-loop mean (raw two-sided paired Wilcoxon p-value), based on 15 case pairs. Both settings retain one principal component. Without DTW uses linear-progress resampling. Bold values indicate better mean performance by VP-AutoTest.*
+
+Without DTW, the differences between the two platforms in PCC, RMSE, TIC, and CS-PSD do not reach the 0.05 significance level for individual tests, whereas **Cross-FuzzyEn remains significantly favorable to VP-AutoTest**, with a mean of 0.090 compared with 0.096 for DC-in-the-loop (p = 0.035). Thus, the results without DTW provide supplementary support for closer agreement between VP-AutoTest and the real-world results in terms of Cross-FuzzyEn. However, because temporal misalignment and discrepancies intrinsic to virtual–physical testing cannot be rigorously separated through this comparison, these numerical results serve only as supplementary reference evidence and cannot directly determine whether the temporal differences removed by DTW are meaningful.
+
 ## Contact
 
 If you have any questions, feel free to contact us (yim211@tongji.edu.cn).
