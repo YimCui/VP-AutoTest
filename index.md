@@ -205,6 +205,190 @@ The DTW setting follows the original full-trajectory processing procedure. The E
 
 Without DTW, the differences between the two platforms in PCC, RMSE, TIC, and CS-PSD do not reach the 0.05 significance level for individual tests, whereas **Cross-FuzzyEn remains significantly favorable to VP-AutoTest**, with a mean of 0.090 compared with 0.096 for DC-in-the-loop (p = 0.035). Thus, the results without DTW provide supplementary support for closer agreement between VP-AutoTest and the real-world results in terms of Cross-FuzzyEn. However, because temporal misalignment and discrepancies intrinsic to virtual–physical testing cannot be rigorously separated through this comparison, these numerical results serve only as supplementary reference evidence and cannot directly determine whether the temporal differences removed by DTW are meaningful.
 
+### 👉 E: Experimental Settings and Reproducibility Details
+
+#### (1) Hardware and Software
+
+- **Vehicle fleet**
+  - Platform fleet: 14 connected and automated vehicles.
+  - Vehicle models include Hongqi ES3, Hongqi EQM5, BYD Han, and Aion LX80.
+
+- **Onboard computing**
+  - BYD Han: TZTEK GEACX2 with two NVIDIA Jetson AGX Orin modules, providing up to 400 TOPS.
+  - Hongqi EQM5: Advantech MIC-75G30 with an NVIDIA RTX 3090 GPU and 2 TB storage.
+  - Aion LX Plus: TZTEK GEACX1 with an eight-core Arm Cortex-A78AE CPU, 200 TOPS, and 64 GB eMMC 5.1 storage.
+
+- **Sensors**
+  - Main LiDAR: RoboSense RS-Ruby, 128 channels.
+  - Blind-spot LiDAR: four RoboSense RS-Bpearl units in the documented BYD and Hongqi configurations.
+  - Millimeter-wave radar: two Continental ARS408-21 units in the documented BYD and Hongqi configurations.
+  - Integrated navigation: INS-570D, with RTK positioning accuracy of 2 cm + 1 ppm and velocity accuracy of 0.03 m/s RMS.
+  - Monocular cameras: eight cameras per vehicle.
+  - Documented Aion camera specifications: resolution of at least 1280 × 720 pixels and a frame rate of 30 fps.
+
+- **Communication hardware**
+  - Vehicle CPE: AR520.
+  - Ethernet switch: NETGEAR GS308.
+  - Drive-by-wire gateway: PG-CAN02-V1A.
+  - Roadside unit: WVR-9110, supporting LTE-V2X.
+
+- **Software components**
+  - Vehicle-side messaging: ROS 1.
+  - Parallel deduction simulator: TESSNG.
+  - Platform-side data exchange: Redis.
+  - HMI operating system: Windows 11.
+
+- **Credibility evaluation dependency manifest**
+  - NumPy: 1.24.4.
+  - SciPy: 1.10.1.
+  - pandas: 2.0.3.
+  - Matplotlib: 3.7.5.
+  - pyproj: 3.5.0.
+
+#### (2) Network Topology and Data Interfaces
+
+- **In-vehicle connections**
+  - LiDAR sensors connect to the onboard computing unit through Ethernet switches.
+  - Cameras use GMSL2 connections.
+  - Millimeter-wave radar and chassis-related devices use CAN interfaces.
+
+- **Vehicle–platform connections**
+  - Redis-based interfaces exchange test tasks, test-start commands, planned trajectories, and virtual-vehicle states.
+  - Vehicle-state upload interface: `/kafka_to_wanji`.
+  - Platform trajectory interface: `/redis_from_wanji`.
+  - Test-start interface: `/redis_task_start`.
+  - Virtual-vehicle interface: `/redis_virtual_vehicles`.
+
+- **Cooperative communication**
+  - Physical vehicles exchange cooperative information through OBUs.
+  - Virtual and physical vehicle information is exchanged through Redis.
+  - The custom UDP middleware supports perception and decision-information exchange between roadside equipment and vehicles, and between vehicles.
+
+#### (3) Sampling Frequencies and Interface Rates
+
+- **Acceptance-test records**
+  - Chassis-state topic `/bywire_vehicle_state`: approximately 100 Hz.
+  - PointPillars perception topic `/plusgo_objects`: 10 Hz.
+  - FCOS3D perception topic `/vs_objects`: 30 Hz.
+
+- **Navigation interface defaults**
+  - INS-570D navigation output: 100 Hz.
+  - RS422 baud rate: 230400 baud.
+  - CAN interface rate: 500 kbit/s.
+
+- **Sensor specifications**
+  - RS-Ruby LiDAR selectable operating frequencies: 10 or 20 Hz.
+  - RS-Ruby network interface: 1000 Mbps Ethernet with UDP packets.
+  - Documented Aion camera frame rate: 30 fps.
+
+- **Credibility evaluation data**
+  - Processed trajectory interval: 0.1 s.
+  - Processed trajectory sampling frequency: 10 Hz.
+
+#### (4) Implementation Details of the Cases Presented in the Manuscript
+##### 4.1 Adversarial Testing
+
+- **Representative scenarios**
+  - Intersection conflict: the vehicle under test makes an unprotected left turn while interacting with an opposing straight-moving vehicle.
+  - Merging conflict: the vehicle under test merges into a lane occupied by an accelerating background vehicle.
+
+- **Reported vehicle states**
+  - Intersection example: the background vehicle accelerates from 9 to 12 km/h; the illustrated vehicle-under-test speed is 4 km/h.
+  - Merging example: the background vehicle accelerates from 22 to 24 km/h; the vehicle under test slows from 6 to 5 km/h.
+
+- **Supplementary paired-test configuration**
+  - Number of cases: 20.
+  - Conditions: non-adversarial and adversarial.
+  - Total runs: 40.
+  - Initial vehicle population: one ego vehicle and eight background vehicles.
+  - Initial states: identical between the two conditions within each case.
+  - Simulation time step: 0.1 s.
+  - Maximum duration per run: 20 s.
+  - Termination condition: geometric contact or completion of the observation period.
+  - Background traffic: no additional arrivals; vehicles are removed after leaving their routes.
+  - Random-initial-state generation seed, NumPy: `2026103004`.
+
+- **Ego-vehicle parameters**
+  - Desired speed: 8.5 m/s.
+  - Maximum acceleration: 1.5 m/s².
+  - Comfortable deceleration: 2.0 m/s².
+  - Maximum deceleration: 6.0 m/s².
+  - Desired time headway: 1.5 s.
+  - Minimum gap: 2.0 m.
+  - Acceleration exponent: 4.
+  - Maximum lateral acceleration: 2.5 m/s².
+  - Route-prediction horizon: 4.0 s.
+  - Reactive stopping threshold: 1.5 s.
+
+- **Adversarial background-vehicle parameters**
+  - Speed upper bound: 20 m/s.
+  - Acceleration bounds: −8 to 3 m/s².
+  - Prediction horizon: 4.0 s.
+  - Prediction time step: 0.2 s.
+
+- **Collision and TTC implementation**
+  - Collision geometry: oriented bounding boxes.
+  - Between-sample contact-check interval: 0.01 s.
+  - TTC prediction: first predicted bounding-box contact along prescribed routes at current speeds.
+  - TTC prediction horizon: 20 s.
+  - TTC prediction interval: 0.1 s.
+  - TTC interaction range: 55 m around the ego vehicle.
+  - No finite predicted contact: stored as a missing TTC value with an associated status code.
+
+##### 4.2 Parallel Deduction Testing
+
+- **Road configuration**
+  - T-junction.
+  - Unprotected left-turn maneuver by the vehicle under test.
+  - Opposing straight-moving interaction vehicle.
+
+- **Vehicle configuration**
+  - Two physical vehicles: VUT and Veh1.
+  - Initial relative positions: VUT approaches the left-turn conflict area, while Veh1 approaches from the opposing direction.
+  - Speeds in the initial AV-mode frame: VUT at 20 km/h and Veh1 at 14 km/h.
+  - Speeds in the takeover-mode frame: VUT at 19 km/h and Veh1 at 15 km/h.
+
+##### 4.3 Vehicle-to-Vehicle Cooperation Testing
+
+- **Scenario**
+  - Multi-vehicle interaction at an intersection.
+
+- **Vehicle configuration**
+  - Total vehicles: six.
+  - Physical vehicles: CAV1, CAV2, and HV.
+  - Virtual vehicles: SV1, SV2, and SV3.
+  - Initial relative positions: CAV1 approaches from the lower arm of the illustrated intersection, CAV2 from the left arm, and HV from the right arm.
+
+- **Communication**
+  - Physical-vehicle information exchange: OBU.
+  - Virtual–physical information exchange: Redis.
+
+- **Recorded quantities**
+  - Vehicle speed.
+  - Distance to the destination.
+  - Intersection passage sequence.
+  - Braking and stopping behavior during the approximately 2–5 s interaction interval.
+
+##### 4.4 Vehicle-to-Infrastructure Cooperation Testing
+
+- **Road configuration**
+  - Four-way signalized intersection.
+  - Left-turn, through, and right-turn routes in all four directions.
+
+- **Traffic and infrastructure**
+  - Traffic demand includes physical and virtual vehicles.
+  - Infrastructure includes RSUs, MEC nodes, and traffic-signal equipment.
+
+- **Control variables**
+  - Signal phase.
+  - Signal sequence.
+  - Green-light duration.
+  - CAV speed profile or recommended speed.
+
+- **Displayed guidance values**
+  - Recommended speed: 20–25 km/h.
+  - Remaining green-light time: 10 s.
+  
 ## Contact
 
 If you have any questions, feel free to contact us (yim211@tongji.edu.cn).
