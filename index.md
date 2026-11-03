@@ -254,10 +254,6 @@ Without DTW, the differences between the two platforms in PCC, RMSE, TIC, and CS
 
 - **Vehicle–platform connections**
   - Redis-based interfaces exchange test tasks, test-start commands, planned trajectories, and virtual-vehicle states.
-  - Vehicle-state upload interface: `/kafka_to_wanji`.
-  - Platform trajectory interface: `/redis_from_wanji`.
-  - Test-start interface: `/redis_task_start`.
-  - Virtual-vehicle interface: `/redis_virtual_vehicles`.
 
 - **Cooperative communication**
   - Physical vehicles exchange cooperative information through OBUs.
@@ -266,10 +262,10 @@ Without DTW, the differences between the two platforms in PCC, RMSE, TIC, and CS
 
 #### (3) Sampling Frequencies and Interface Rates
 
-- **Acceptance-test records**
-  - Chassis-state topic `/bywire_vehicle_state`: approximately 100 Hz.
-  - PointPillars perception topic `/plusgo_objects`: 10 Hz.
-  - FCOS3D perception topic `/vs_objects`: 30 Hz.
+- **Data publication frequencies**
+  - Chassis-state data: approximately 100 Hz.
+  - LiDAR-based object detection results: 10 Hz.
+  - Camera-based object detection results: 30 Hz.
 
 - **Navigation interface defaults**
   - INS-570D navigation output: 100 Hz.
