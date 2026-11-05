@@ -209,11 +209,11 @@ Without DTW, the differences between the two platforms in PCC, RMSE, TIC, and CS
 
 This appendix provides the supplementary experimental settings, evaluation metrics, and results supporting the adversarial testing analysis in Section IV-A.
 
-#### D.1 Experimental Settings
+#### (1) Experimental Settings
 
 The supplementary experiments comprise 20 initial-state configurations. Each configuration is evaluated under both non-adversarial and adversarial conditions, yielding 20 paired comparisons. Within each pair, the road geometry, vehicle parameters, initial states, and ego-vehicle algorithm remain identical. Each run has a maximum duration of 20 s and a sampling interval of 0.1 s. The ego vehicle uses a fixed-parameter IDM controller augmented with conflict-object projection and braking responses for vehicle interactions.
 
-#### D.2 Evaluation Metrics
+#### (2) Evaluation Metrics
 
 The evaluation covers risk exposure, event detection, and simulation budget.
 
@@ -223,7 +223,7 @@ The evaluation covers risk exposure, event detection, and simulation budget.
 
 3. **Time and budget:** Cumulative time to first detection follows the same fixed case order and ends when the first severe risk episode is confirmed at its third consecutive threshold-satisfying sample. Simulated time per episode is the actual cumulative simulated time divided by the total number of severe risk episodes. Episode yield per 100 s of simulation is also reported.
 
-#### D.3 Results
+#### (3) Results
 
 **Table D.1. Comparison of Risk Exposure and Safety-Critical Event Detection Across 20 Paired Cases**
 
@@ -247,7 +247,7 @@ Within these paired cases, adversarial testing exposes potential safety problems
 
 These results indicate that adversarial testing provides denser safety-critical interactions per unit simulated time, supplying additional traces for identifying, reproducing, and investigating potential algorithmic weaknesses.
 
-#### D.4 Run-Level Statistical Analysis
+#### (4) Run-Level Statistical Analysis
 
 Statistical analysis uses the 20 paired run-level differences rather than individual time samples. Two-sided exact paired sign-flip calculations enumerate all \(2^{20}\) sign combinations, followed by Holm correction across low-TTC sample proportion, TET, and TIT. Their adjusted \(p\)-values are \(3.433\times10^{-5}\), \(3.433\times10^{-5}\), and \(2.861\times10^{-5}\), respectively. These exploratory comparisons indicate increased risk-exposure proportion, duration, and cumulative magnitude within the evaluated case set.
 
