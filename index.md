@@ -205,7 +205,55 @@ The DTW setting follows the original full-trajectory processing procedure. The E
 
 Without DTW, the differences between the two platforms in PCC, RMSE, TIC, and CS-PSD do not reach the 0.05 significance level for individual tests, whereas **Cross-FuzzyEn remains significantly favorable to VP-AutoTest**, with a mean of 0.090 compared with 0.096 for DC-in-the-loop (p = 0.035). Thus, the results without DTW provide supplementary support for closer agreement between VP-AutoTest and the real-world results in terms of Cross-FuzzyEn. However, because temporal misalignment and discrepancies intrinsic to virtual–physical testing cannot be rigorously separated through this comparison, these numerical results serve only as supplementary reference evidence and cannot directly determine whether the temporal differences removed by DTW are meaningful.
 
-### 👉 E: Experimental Settings and Reproducibility Details
+### **👉 D: Supplementary Results of Adversarial Testing**
+
+This appendix provides the supplementary experimental settings, evaluation metrics, and results supporting the adversarial testing analysis in Section IV-A.
+
+#### D.1 Experimental Settings
+
+The supplementary experiments comprise 20 initial-state configurations. Each configuration is evaluated under both non-adversarial and adversarial conditions, yielding 20 paired comparisons. Within each pair, the road geometry, vehicle parameters, initial states, and ego-vehicle algorithm remain identical. Each run has a maximum duration of 20 s and a sampling interval of 0.1 s. The ego vehicle uses a fixed-parameter IDM controller augmented with conflict-object projection and braking responses for vehicle interactions.
+
+#### D.2 Evaluation Metrics
+
+The evaluation covers risk exposure, event detection, and simulation budget.
+
+1. **Risk exposure:** Mean TTC capped at 20 s, the proportion of samples satisfying \(\mathrm{TTC}\leq2.5\) s, TET, and TIT are calculated separately for each run and then averaged with equal weights across 20 runs. All metrics use the actual observation period. TET measures the accumulated duration of states satisfying \(\mathrm{TTC}\leq2.5\) s. TIT integrates the positive difference \(\max(2.5-\mathrm{TTC},0)\) over time, reflecting both exposure duration and magnitude.
+
+2. **Event detection:** A persistent safety-critical event requires at least three consecutive samples satisfying \(\mathrm{TTC}\leq2.5\) s and is summarized by the number of runs containing such an event. A severe risk episode is a maximal contiguous sequence of at least three samples satisfying \(\mathrm{TTC}\leq1.5\) s; separate sequences within the same run are counted individually. The 1.5 s threshold follows the default TTC conflict-identification threshold used in the [FHWA SSAM report](https://www.fhwa.dot.gov/publications/research/safety/08051/02.cfm). The three-sample requirement is a persistence filter adopted in this study. Geometric contacts involving the ego vehicle and contacts between background vehicles are reported separately by run.
+
+3. **Time and budget:** Cumulative time to first detection follows the same fixed case order and ends when the first severe risk episode is confirmed at its third consecutive threshold-satisfying sample. Simulated time per episode is the actual cumulative simulated time divided by the total number of severe risk episodes. Episode yield per 100 s of simulation is also reported.
+
+#### D.3 Results
+
+**Table D.1. Comparison of Risk Exposure and Safety-Critical Event Detection Across 20 Paired Cases**
+
+| Metric | Non-adversarial | Adversarial |
+|---|---:|---:|
+| Mean TTC, capped at 20 s (s) | 17.653 | 13.739 |
+| Mean low-TTC sample proportion (%) | 7.861 | 18.159 |
+| Mean TET (s) | 1.580 | 2.855 |
+| Mean TIT (s²) | 0.826 | 2.307 |
+| Runs with persistent critical events | 19/20 (95%) | 20/20 (100%) |
+| Number of severe risk episodes | 7 | 10 |
+| Runs with geometric contact involving the ego vehicle | 0/20 (0%) | 1/20 (5%) |
+| Runs with background–background contact | 0/20 (0%) | 0/20 (0%) |
+| Maximum simulation budget (s) | 400.00 | 400.00 |
+| Actual simulated time (s) | 400.00 | 384.20 |
+| Severe risk episodes per 100 s of simulation | 1.750 | 2.603 |
+| Simulated time per severe risk episode (s) | 57.14 | 38.42 |
+| Cumulative simulated time to the first severe risk episode (s) | 84.60 | 64.50 |
+
+Within these paired cases, adversarial testing exposes potential safety problems earlier and more frequently while reducing the simulation budget per detected severe risk episode. Under the same maximum budget of 400 s, the number of severe risk episodes increases from 7 to 10. Episode yield increases from 1.750 to 2.603 episodes per 100 s, an increase of approximately 48.7%. Simulated time per episode decreases from 57.14 to 38.42 s, a reduction of approximately 32.8%. Under the same fixed execution order, cumulative time to the first confirmed episode decreases from 84.60 to 64.50 s.
+
+These results indicate that adversarial testing provides denser safety-critical interactions per unit simulated time, supplying additional traces for identifying, reproducing, and investigating potential algorithmic weaknesses.
+
+#### D.4 Run-Level Statistical Analysis
+
+Statistical analysis uses the 20 paired run-level differences rather than individual time samples. Two-sided exact paired sign-flip calculations enumerate all \(2^{20}\) sign combinations, followed by Holm correction across low-TTC sample proportion, TET, and TIT. Their adjusted \(p\)-values are \(3.433\times10^{-5}\), \(3.433\times10^{-5}\), and \(2.861\times10^{-5}\), respectively. These exploratory comparisons indicate increased risk-exposure proportion, duration, and cumulative magnitude within the evaluated case set.
+
+The TTC boxplot in Fig. 6 and the threshold statistics in Table II have also been updated using these 20 paired cases, with inclusive comparisons applied to all TTC thresholds.
+
+### 👉 **E: Experimental Settings and Reproducibility Details**
 
 #### (1) Hardware and Software
 
