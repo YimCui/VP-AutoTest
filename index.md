@@ -249,7 +249,7 @@ These results indicate that adversarial testing provides denser safety-critical 
 
 #### (4) Run-Level Statistical Analysis
 
-Statistical analysis uses the 20 paired run-level differences rather than individual time samples. Two-sided exact paired sign-flip calculations enumerate all $\(2^{20}\)$ sign combinations, followed by Holm correction across low-TTC sample proportion, TET, and TIT. Their adjusted \(p\)-values are \(3.433\times10^{-5}\), \(3.433\times10^{-5}\), and \(2.861\times10^{-5}\), respectively. These exploratory comparisons indicate increased risk-exposure proportion, duration, and cumulative magnitude within the evaluated case set.
+Statistical analysis uses the 20 paired run-level differences rather than individual time samples. Two-sided exact paired sign-flip calculations enumerate all $2^{20}$ sign combinations, followed by Holm correction across low-TTC sample proportion, TET, and TIT. Their adjusted $p$-values are $3.433\times10^{-5}$, $3.433\times10^{-5}$, and $2.861\times10^{-5}$, respectively. These exploratory comparisons indicate increased risk-exposure proportion, duration, and cumulative magnitude within the evaluated case set.
 
 The TTC boxplot in Fig. 6 and the threshold statistics in Table II have also been updated using these 20 paired cases, with inclusive comparisons applied to all TTC thresholds.
 
